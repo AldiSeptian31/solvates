@@ -1,68 +1,104 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
+
 const app = express();
 
-// Izinkan frontend mengakses backend
-app.use(cors());
+/* ===============================
+   CORS CONFIG (WAJIB & FIX)
+================================ */
+app.use(cors({
+  origin: [
+    'https://solvates.vercel.app', // frontend Vercel
+    'http://localhost:3000'        // frontend lokal
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+/* ===============================
+   MIDDLEWARE
+================================ */
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// PENTING: Sajikan file gambar dari folder 'public'
-app.use(express.static('public'));
+// Static folder untuk gambar
+app.use('/images', express.static(path.join(__dirname, 'public/images')));
 
-// Data Produk (Database Sederhana)
+/* ===============================
+   DUMMY PRODUCT DATA
+================================ */
 const products = [
-    { 
-        id: 'sepatu-001', 
-        name: 'Velocity Runner', 
-        brand: 'AeroStride', 
-        price: 750000, 
-        imageUrl: 'https://solvates-production.up.railway.app/images/sepatu-lari.jpeg' 
-        // Catatan: Nanti browser akan otomatis menyesuaikan domain jika pakai relative path, 
-        // tapi untuk aman di Railway, pastikan file ada di folder public/images
-    },
-    { id: 'sepatu-002', name: 'Urban Walker', brand: 'CityScout', price: 550000, imageUrl: 'https://solvates-production.up.railway.app/images/sepatu-kota.jpg' },
-    { id: 'sepatu-003', name: 'Trail Blazer', brand: 'TerraFlex', price: 950000, imageUrl: 'https://solvates-production.up.railway.app/images/sepatu-trail.jpeg' },
-    { id: 'sepatu-004', name: 'Classic Canvas', brand: 'OldSkool', price: 450000, imageUrl: 'https://solvates-production.up.railway.app/images/sepatu-canvas.jpg' },
-    { 
-        id: 'sepatu-005', 
-        name: 'Ortuseight Hyperblast 2.0', 
-        brand: 'Ortuseight', 
-        price: 1000000, 
-        imageUrl: 'https://solvates-production.up.railway.app/images/ortuseight-hyperblast.jpg' 
-    },
-    { 
-        id: 'sepatu-006', 
-        name: 'Ortuseight Solar 1.0', 
-        brand: 'Ortuseight', 
-        price: 1500000, 
-        imageUrl: 'https://solvates-production.up.railway.app/images/ortuseight-solar.jpg' 
-    }
+  {
+    id: 'sepatu-001',
+    name: 'Velocity Runner',
+    brand: 'AeroStride',
+    price: 750000,
+    image: 'sepatu-lari.jpeg'
+  },
+  {
+    id: 'sepatu-002',
+    name: 'Urban Walker',
+    brand: 'CityScout',
+    price: 550000,
+    image: 'sepatu-kota.jpg'
+  },
+  {
+    id: 'sepatu-003',
+    name: 'Trail Blazer',
+    brand: 'TerraFlex',
+    price: 950000,
+    image: 'sepatu-trail.jpeg'
+  },
+  {
+    id: 'sepatu-004',
+    name: 'Classic Canvas',
+    brand: 'OldSkool',
+    price: 450000,
+    image: 'sepatu-canvas.jpg'
+  },
+  {
+    id: 'sepatu-005',
+    name: 'Ortuseight Hyperblast 2.0',
+    brand: 'Ortuseight',
+    price: 1000000,
+    image: 'ortuseight-hyperblast.jpg'
+  },
+  {
+    id: 'sepatu-006',
+    name: 'Ortuseight Solar 1.0',
+    brand: 'Ortuseight',
+    price: 1500000,
+    image: 'ortuseight-solar.jpg'
+  }
 ];
 
-// === API ENDPOINTS ===
+/* ===============================
+   ROUTES
+================================ */
 
-// 1. Test Route (Untuk cek server nyala/tidak)
+// Test server
 app.get('/', (req, res) => {
-    res.send('Server SoleMates Berjalan!');
+  res.send('✅ Server SoleMates berjalan');
 });
 
-// 2. Ambil Data Produk
+// Get products
 app.get('/api/products', (req, res) => {
-    // Kita map produk untuk memastikan URL gambar dinamis sesuai host
-    const hostUrl = `${req.protocol}://${req.get('host')}`;
-    
-    const updatedProducts = products.map(product => {
-        // Ambil nama file saja dari URL yang mungkin hardcoded
-        const fileName = product.imageUrl.split('/').pop();
-        return {
-            ...product,
-            imageUrl: `${hostUrl}/images/${fileName}`
-        }
-    });
+  const baseUrl = `${req.protocol}://${req.get('host')}`;
 
-    res.status(200).json(updatedProducts);
+  const result = products.map(p => ({
+    ...p,
+    imageUrl: `${baseUrl}/images/${p.image}`
+  }));
+
+  res.status(200).json(result);
 });
 
-// Jalankan Server
+/* ===============================
+   SERVER START
+================================ */
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+});
