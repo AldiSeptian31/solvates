@@ -16,26 +16,26 @@ const products = [
         name: 'Velocity Runner', 
         brand: 'AeroStride', 
         price: 750000, 
-        imageUrl: 'images/sepatu-lari.jpeg' 
+        imageUrl: 'https://ecom-production.up.railway.app/images/sepatu-lari.jpeg' 
         // Catatan: Nanti browser akan otomatis menyesuaikan domain jika pakai relative path, 
         // tapi untuk aman di Railway, pastikan file ada di folder public/images
     },
-    { id: 'sepatu-002', name: 'Urban Walker', brand: 'CityScout', price: 550000, imageUrl: 'images/sepatu-kota.jpg' },
-    { id: 'sepatu-003', name: 'Trail Blazer', brand: 'TerraFlex', price: 950000, imageUrl: 'images/sepatu-trail.jpeg' },
-    { id: 'sepatu-004', name: 'Classic Canvas', brand: 'OldSkool', price: 450000, imageUrl: 'images/sepatu-canvas.jpg' },
+    { id: 'sepatu-002', name: 'Urban Walker', brand: 'CityScout', price: 550000, imageUrl: 'https://ecom-production.up.railway.app/images/sepatu-kota.jpg' },
+    { id: 'sepatu-003', name: 'Trail Blazer', brand: 'TerraFlex', price: 950000, imageUrl: 'https://ecom-production.up.railway.app/images/sepatu-trail.jpeg' },
+    { id: 'sepatu-004', name: 'Classic Canvas', brand: 'OldSkool', price: 450000, imageUrl: 'https://ecom-production.up.railway.app/images/sepatu-canvas.jpg' },
     { 
         id: 'sepatu-005', 
         name: 'Ortuseight Hyperblast 2.0', 
         brand: 'Ortuseight', 
         price: 1000000, 
-        imageUrl: 'images/ortuseight-hyperblast.jpg' 
+        imageUrl: 'https://ecom-production.up.railway.app/images/ortuseight-hyperblast.jpg' 
     },
     { 
         id: 'sepatu-006', 
         name: 'Ortuseight Solar 1.0', 
         brand: 'Ortuseight', 
         price: 1500000, 
-        imageUrl: 'images/ortuseight-solar.jpg' 
+        imageUrl: 'https://ecom-production.up.railway.app/images/ortuseight-solar.jpg' 
     }
 ];
 
@@ -64,5 +64,5 @@ app.get('/api/products', (req, res) => {
 });
 
 // Jalankan Server
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
