@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 
-const API_URL = 'https://ecom-production-a639.up.railway.app'; 
+const API_URL = 'https://solvates-production.up.railway.app'; 
 const QRIS_IMAGE_URL = `/images/qris-saya.jpg`; 
 
 const PAYMENT_OPTIONS = [
